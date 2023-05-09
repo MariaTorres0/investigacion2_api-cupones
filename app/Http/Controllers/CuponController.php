@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cupon;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -9,39 +11,39 @@ use Illuminate\Support\Facades\Auth;
 class CuponController extends Controller
 {
 
-    public function getCuponById($id){
+    public function getCuponById($id)
+    {
 
-        $cupon = DB::select('SELECT * FROM cupones WHERE id_cupon = ?', array($id));
+        $cupon = Cupon::where('id_cupon', '=', $id)->get();
         return response()->json([
             'status' => 200,
             'body' => $cupon
         ]);
     }
 
-    public function updateCupon($id){
+    public function updateCupon($id)
+    {
 
-        $cupon = DB::select('SELECT * FROM cupones WHERE id_cupon = ?', array($id));
+        $cupon = Cupon::where('id_cupon', '=', $id)->get();
 
-        if ($cupon != null){
-            if ($cupon[0]->vencido != 0){
+        if ($cupon != null) {
+            if ($cupon[0]->vencido != 0) {
                 return response()->json([
                     'status' => 400,
                     'msj' => 'Cupon vencido',
                     'body' => null,
 
                 ]);
-            }else if($cupon[0]->estado == 1){
+            } else if ($cupon[0]->estado == 1) {
                 return response()->json([
                     'status' => 400,
                     'msj' => 'Cupon ya canjeado',
                     'body' => null,
 
                 ]);
-            }else{
-                $cuponUpd = DB::table('cupones')
-                    ->where('id_cupon', $id)
-                    ->update(['estado' => 1]);
-                $cupon = DB::select('SELECT * FROM cupones WHERE id_cupon = ?', array($id));
+            } else {
+                $cuponUpd = Cupon::where('id_cupon', $id)->update(['estado' => 1]);
+                $cupon = Cupon::where('id_cupon', '=', $id)->get();
                 return response()->json([
                     'status' => 200,
                     'msj' => 'Actualizado',
@@ -49,7 +51,7 @@ class CuponController extends Controller
                 ]);
             }
 
-        }else{
+        } else {
             return response()->json([
                 'status' => 404,
                 'msj' => 'cupon no encontrado',
