@@ -48,6 +48,7 @@ class CuponController extends Controller
                     'body' => $cupon,
                 ]);
             }
+
         }else{
             return response()->json([
                 'status' => 404,
