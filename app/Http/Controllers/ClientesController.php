@@ -100,7 +100,7 @@ class ClientesController extends Controller
             'status' => 404,
             'msj' => 'cliente creado correctamente',
             'body' => $cliente
-        ], 201);
+        ], 200);
     }
 
     public function deleteById($id){
