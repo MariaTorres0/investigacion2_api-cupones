@@ -48,6 +48,7 @@ class ClientesController extends Controller
         }
     }
 
+
     public function getClientes()
     {
         $clientes = Cliente::all();
